@@ -12,7 +12,6 @@ ARG DNF_LIST="\
   gpgme-devel \
   libassuan-devel \
   wget \
-  pigz \
 "
 
 
@@ -41,7 +40,7 @@ RUN make build
 FROM quay.io/centos/centos:stream9
 ARG TARGETPLATFORM
 RUN if [[ "$TARGETPLATFORM" == "linux/amd64" || -z "$TARGETPLATFORM" ]] ; then  dnf install -y biosdevname dmidecode ; fi
-RUN if [[ "$TARGETPLATFORM" == "linux/arm64" || -z "$TARGETPLATFORM" ]] ; then  dnf install -y dmidecode ; fi
+RUN if [[ "$TARGETPLATFORM" == "linux/arm64" || "$TARGETPLATFORM" == "linux/s390x" || -z "$TARGETPLATFORM" ]] ; then  dnf install -y dmidecode ; fi
 
 RUN dnf install --setopt=install_weak_deps=False --setopt=tsdocs=False -y \
                 findutils iputils \
